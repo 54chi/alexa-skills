@@ -1,0 +1,4 @@
+/samples/*
+*.zip
+node_modules
+*.log

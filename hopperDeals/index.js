@@ -3,33 +3,15 @@
   For educational purposes only
 **/
 
-/**
- * This sample shows how to create a Lambda function for handling Alexa Skill requests that:
- *
- * - User info: Using the amazon account as a key, store user's preferences in a Database (e-mail and point of origin)
- * - Screen scrapper: Usi
- * - Session State: Handles a multi-turn dialog model.
- * - Custom slot type: demonstrates using custom slot types to handle a finite set of known values
- * - SSML: Using SSML tags to control how Alexa renders the text-to-speech.
- * - use i18n
- *
- * Examples:
- * Dialog model:
- *  User: "Alexa, ask Wise Guy to tell me a knock knock joke."
- *  Alexa: "Knock knock"
- *  User: "Who's there?"
- *  Alexa: "<phrase>"
- *  User: "<phrase> who"
- *  Alexa: "<Punchline>"
- */
 
-//Amazon skill template (this is pretty much standard)
+// Amazon skill template (this is pretty much standard)
+// ALL LOGIC AND CHANGES ARE IN THE LIBS FOLDER
 'use strict';
 
 //require stuff
 var AlexaSkill = require('./libs/AlexaSkill');
-var intentHandlers = require('./libs/intents');
-var i18n = require('./libs/i18n');
+var intentHandlers = require('./src/intents');
+var i18n = require('./src/i18n');
 
 // App ID for the skill
 var APP_ID = '';
@@ -50,7 +32,6 @@ App.prototype.eventHandlers.onSessionStarted = function (sessionStartedRequest, 
 
 App.prototype.eventHandlers.onLaunch = function (launchRequest, session, response) {
  console.log('App onLaunch requestId: ' + launchRequest.requestId + ', sessionId: ' + session.sessionId);
-
  response.ask(i18n.greeting, i18n.greetingReprompt);
 };
 

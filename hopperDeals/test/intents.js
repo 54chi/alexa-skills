@@ -1,7 +1,7 @@
 'use strict';
 
 var test = require('tape');
-var intents = require('../libs/intents');
+var intents = require('../src/intents');
 
 var intent = {};
 
@@ -25,16 +25,9 @@ var response = {
 };
 
 test('intents', function (t) {
-  t.plan(8);
+  t.plan(1);
 
-  intents.ReadTopStoriesIntent(intent, session, response).then(callback);
-  intents.ReadNewStoriesIntent(intent, session, response).then(callback);
-  intents.ReadShowStoriesIntent(intent, session, response).then(callback);
-  intents.ReadAskStoriesIntent(intent, session, response).then(callback);
-  intents.ReadJobStoriesIntent(intent, session, response).then(callback);
-  intents.ReadBestStoriesIntent(intent, session, response).then(callback);
-  intents.ReadActiveStoriesIntent(intent, session, response).then(callback);
-  intents.ReadNoobStoriesIntent(intent, session, response).then(callback);
+  intents.ReadNewDealsIntent(intent, session, response).then(callback);
 
   function callback(speech) {
     t.equal(typeof speech, 'string');

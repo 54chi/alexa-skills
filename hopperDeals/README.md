@@ -2,6 +2,7 @@
 
 ## Scrap notes:
 1) Besides Amazon's Alexa Kit Use Hacker News skill as a template (from miguelmota.com)
+2) npm test <-- make sure that "tape" is installed globally
 
 Basic tutorial:
 https://developer.amazon.com/public/solutions/alexa/alexa-skills-kit/docs/developing-an-alexa-skill-as-a-lambda-function
@@ -34,6 +35,21 @@ Setup/store email using Amazon's DynamoDB:
 https://github.com/toyhammered/alexa-skills/tree/master/dailyCutiemals/src
 
 
+## About this project
+This sample project shows how to create a Lambda function for handling Alexa Skill requests with:
+
+- User info: Using the amazon account as a key, store user's preferences in a Database (e-mail and point of origin)
+- Screen scrapper: Using Cheerio
+- Session State: Handles a multi-turn dialog model.
+- Custom slot type: demonstrates using custom slot types to handle a finite set of known values
+- SSML: Using SSML tags to control how Alexa renders the text-to-speech.
+- Support i18n (for future usage and better message configuration)
+
+File structure:
+- index.js is the starter generic file (e.g. the App is called "App" :))
+- /lib contains the Amazon libraries (AlexaSkill.js)
+- /src contains the intents and configured dialogs (via i18n)
+- /test contains the test files (using tape for simplicity)
 
 ## Examples
 ### Dialog model:
@@ -79,3 +95,21 @@ https://github.com/toyhammered/alexa-skills/tree/master/dailyCutiemals/src
     User: "Alexa, Exit"
 
     User: "Cancel"
+
+## Testing the project
+
+To test, get all dependencies via npm install and then do:
+
+```
+npm test
+```
+
+## Credits
+
+This code is a compilation of the following projectS:
+- Miguel Mota's Hacker News skill, for the screen scrapping
+- Toy Hammered's dailyCutiemals, for the email functionality
+
+List of airports/city from https://gist.github.com/tdreyno/4278655
+
+Everything else is based from the NPM packages documentation

@@ -1,4 +1,4 @@
-/samples/*
+samples
 *.zip
 node_modules
 *.log

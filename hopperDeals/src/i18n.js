@@ -5,10 +5,18 @@ module.exports = {
   helpContact: 'For reporting bugs or suggestions, please email 54chiMaster@gmail.com',
   helpPrompt: 'Where do you want to go Today?',
   exit: 'Ok, till next time.',
-  greeting: 'What travel deals would you like to hear? You can say, "new deals" or "anywhere".',
+  greeting: 'Welcome to Hopper Deals. What travel deals would you like to hear? You can say, "new deals" or "anywhere".',
   greetingReprompt: 'Sorry, I didn\'t get that. What travel deals would you like to hear? You can say, "new deals" or "anywhere".',
   hearMoreDeals: 'Would you like to hear more deals?',
-  noDeals: 'There were no Deals returned.',
+  firstDeal: 'First deal',
+  lastDeal: 'Last deal',
+  nextDeal: 'Next deal',
+  noDeals: 'There were no Deals found.',
   newDeal: 'New Deal',
-  errorRetrievingNewDeals: 'Sorry, there was error retrieving new Deals.'
+  errorRetrievingNewDeals: 'Sorry, there was an error retrieving new Deals.',
+  speechDealsStart:'Here are the ',
+  speechDealsEnd:' travel deals:',
+  speechDealsFirst:'first',
+  speechDealsNext:'next',
+  speechDealsLast:'last'
 };

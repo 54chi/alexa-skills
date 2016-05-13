@@ -5,11 +5,11 @@ var api = require('../src/api');
 
 test('api', function (t) {
   t.plan(1);
-
   var dealTypes = ['new'];
-
   dealTypes.forEach(function(type) {
-    api.getDeals().then(function(deals){
+    api.getDeals({
+      destination:'city/SEA'
+    }).then(function(deals){
       var titles = deals.map(function(deal){
         return deal.title;
       });

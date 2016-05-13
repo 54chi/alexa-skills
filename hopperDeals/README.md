@@ -36,6 +36,8 @@ https://github.com/toyhammered/alexa-skills/tree/master/dailyCutiemals/src
 
 
 ## About this project
+Find [Hopper Deals](http://www.hopper.com/) from anywhere to anywhere. Hopper doesn't provide an open API, and there weren't many travel apps at the time of this writing, so I thought it would made for a nice project.
+
 This sample project shows how to create a Lambda function for handling Alexa Skill requests with:
 
 - User info: Using the amazon account as a key, store user's preferences in a Database (e-mail and point of origin)
@@ -75,8 +77,6 @@ File structure:
     Alexa: "Ok. Where would you like to go?"
     User:  "Europe"
 
-    Alexa: "Searching"
-
     Alexa: "Here are the top deals from Chicago to Europe. The top deal is to <city name> from <start date> to <end date> for $<dollar amount>. Would you like to get more info on this deal?"
     User:  "no"
     Alexa: "The second deal is .... Would you like to get more info on this deal?"
@@ -104,12 +104,22 @@ To test, get all dependencies via npm install and then do:
 npm test
 ```
 
+## Notes
+
+For educational purposes only. All data stored and retrieved will never be sold nor used for anything really. Analytics may be captured on the Hopper site, but they will be for the Alexa skill, not individual users.
+
+Keep in mind that Hopper deals are basically crowd-sourced, so it can't guarantee you the best deal ever, though it will consistently recommend you better deals than average travel sites (IMHO). If there is demand/need for it, I may upgrade the email link to redirect you to a booking site (e.g. skyscanner's or google's) so you get the most accurate price, along other alternatives.
+
+I may also like to offer some airbnb options through their API (https://api.airbnb.com/), but I'm not totally sure how to do the UX for the interaction yet (e.g. my own preference is to pick a place NEAR a specific place I want to visit -- e.g. within a city, but that is not too expensive nor in a dangerous area).
+
+For reporting bugs or suggestions, please email 54chiMaster@gmail.com
+
 ## Credits
 
-This code is a compilation of the following projectS:
+This Alexa Skill code is a compilation of the following projectS:
 - Miguel Mota's Hacker News skill, for the screen scrapping
 - Toy Hammered's dailyCutiemals, for the email functionality
 
 List of airports/city from https://gist.github.com/tdreyno/4278655
 
-Everything else is based from the NPM packages documentation
+Everything else is based from the NPM packages documentation.

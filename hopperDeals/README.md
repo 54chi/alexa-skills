@@ -1,46 +1,13 @@
-#Alexa Skill for Hopper Deals
-
-## Scrap notes:
-1) Besides Amazon's Alexa Kit Use Hacker News skill as a template (from miguelmota.com)
-2) npm test <-- make sure that "tape" is installed globally
-
-Basic tutorial:
-https://developer.amazon.com/public/solutions/alexa/alexa-skills-kit/docs/developing-an-alexa-skill-as-a-lambda-function
-https://developer.amazon.com/public/solutions/alexa/alexa-skills-kit/overviews/understanding-the-smart-home-skill-api
-https://developer.amazon.com/public/solutions/alexa/alexa-skills-kit/docs/testing-an-alexa-skill
-https://developer.amazon.com/public/solutions/alexa/alexa-skills-kit/docs/alexa-skills-kit-voice-design-handbook
-
-Super simple Cheerio usage:
-  var cheerio = require('cheerio');
-  var request = require('request');
-
-  request('https://julieanns.com/flavor-of-the-day-calendar/', function(err, res, html) {
-    if (!err && res.statusCode === 200) {
-      var $ = cheerio.load(html);
-      var flavors = $('.evcal_desc.evo_info')
-        .map(function(index, flavor) {
-          var $flavor = $(flavor);
-          return {
-            name: $flavor.children('.evcal_event_title').text(),
-            description: $flavor.children('.evcal_event_subtitle').text(),
-          };
-        }).toArray();
-      flavors.forEach(function(flavor) {
-        console.log(flavor);
-      });
-    }
-  });
-
-Setup/store email using Amazon's DynamoDB:
-https://github.com/toyhammered/alexa-skills/tree/master/dailyCutiemals/src
-
+#Alexa Skill for Hopper Explorer
 
 ## About this project
 Find [Hopper Deals](http://www.hopper.com/) from anywhere to anywhere. Hopper doesn't provide an open API, and there weren't many travel apps at the time of this writing, so I thought it would made for a nice project.
 
-This sample project shows how to create a Lambda function for handling Alexa Skill requests with:
+This skill solves my needs as a Digital Nomad wannabe: find a country to travel to for a very good price, without worrying too much exact dates or airline carrier (at least as a starting point).
 
-- User info: Using the amazon account as a key, store user's preferences in a Database (e-mail and point of origin)
+The project shows how to create a Lambda function for handling Alexa Skill requests with:
+
+- TODO: User info: Using the amazon account as a key, store user's preferences in a Database (e-mail and point of origin)
 - Screen scrapper: Using Cheerio
 - Session State: Handles a multi-turn dialog model.
 - Custom slot type: demonstrates using custom slot types to handle a finite set of known values
@@ -54,47 +21,14 @@ File structure:
 - /test contains the test files (using tape for simplicity)
 
 ## Examples
-### Dialog model:
-    User: "Alexa, ask Hopper Deals for cheap tickets from Chicago to Europe"
-  or
-    User:  "Alexa, open Hopper Deals"
-    Alexa: "Welcome to Hopper Deals. Are you planning to depart from Chicago?"
-    User:  "Yes"
-    Alexa: "Ok. Where would you like to go?"
-    User:  "Europe"
-  or
-    User:  "Alexa, open Hopper Deals"
-    Alexa: "Welcome to Hopper Deals. Are you planning to depart from Chicago?"
-    User:  "No, from Denver"
-    Alexa: "Ok. Where would you like to go?"
-    User:  "Europe"
-  or
-    User:  "Alexa, open Hopper Deals"
-    Alexa: "Welcome to Hopper Deals. Are you planning to depart from Chicago?"
-    User:  "No"
-    Alexa: "Got it. Where are you planning to depart from?"
-    User:  "Denver"
-    Alexa: "Ok. Where would you like to go?"
-    User:  "Europe"
-
-    Alexa: "Here are the top deals from Chicago to Europe. The top deal is to <city name> from <start date> to <end date> for $<dollar amount>. Would you like to get more info on this deal?"
-    User:  "no"
-    Alexa: "The second deal is .... Would you like to get more info on this deal?"
-    User : "yes"|"sure"|"yep"|"why not?"|"okay"
-    Alexa: "Ok. I've sent you an email with more information. Would you like to hear more deals?"
-    User : "no"
-
-    User: "Alexa, change the destination"
-    Alexa: "Ok. Where would you like to go?"
-    User:  "Mauritus"
-
-    User: "Alexa, let's do a new search"
-
-
-    User: "Alexa, quit Hopper Deals"
-    User: "Alexa, Exit"
-
-    User: "Cancel"
+### Sample Utterances:
+```
+HopperExplorer from {USCity} to {Continent}
+HopperExplorer from {USCity} to the {Continent} continent
+HopperExplorer new deals from {USCity} to {Continent}
+HopperExplorer what are the cheapest flights from {USCity} to {Continent}?
+HopperExplorer show me the best flights from {USCity} to {Continent}
+```
 
 ## Testing the project
 
@@ -108,9 +42,13 @@ npm test
 
 For educational purposes only. All data stored and retrieved will never be sold nor used for anything really. Analytics may be captured on the Hopper site, but they will be for the Alexa skill, not individual users.
 
-Keep in mind that Hopper deals are basically crowd-sourced, so it can't guarantee you the best deal ever, though it will consistently recommend you better deals than average travel sites (IMHO). If there is demand/need for it, I may upgrade the email link to redirect you to a booking site (e.g. skyscanner's or google's) so you get the most accurate price, along other alternatives.
+Keep in mind that Hopper deals are basically crowd-sourced, so it can't guarantee you the best deal ever, though it will consistently recommend you better deals than average travel sites (IMHO). If there is demand/need for it, I'll upgrade the email link to redirect you to a booking site (e.g. skyscanner's or google's), but for now it's up to you to go check the deals yourself.
 
-I may also like to offer some airbnb options through their API (https://api.airbnb.com/), but I'm not totally sure how to do the UX for the interaction yet (e.g. my own preference is to pick a place NEAR a specific place I want to visit -- e.g. within a city, but that is not too expensive nor in a dangerous area).
+Alexa skill for cities is currently constrained to US only. I may add my own list later, but I need to build the different ways to call for cities, e.g. "Mexico D.F" vs "Mexico City", all those "Saint" vs "St.", dashes, commas, apostrophes, etc. etc.
+
+PS. The skill secretly supports cities as destinations, but the results are not as good (e.g. 10 results for the same airlines, with the same price but different days, which is not what I wanted, user-experience wise).
+
+PS2. Kayak just published its own official skill.
 
 For reporting bugs or suggestions, please email 54chiMaster@gmail.com
 
@@ -118,8 +56,8 @@ For reporting bugs or suggestions, please email 54chiMaster@gmail.com
 
 This Alexa Skill code is a compilation of the following projectS:
 - Miguel Mota's Hacker News skill, for the screen scrapping
-- Toy Hammered's dailyCutiemals, for the email functionality
+- Toy Hammered's dailyCutiemals, for the email functionality (which I may use eventually, at least to store the point of origin)
 
-List of airports/city from https://gist.github.com/tdreyno/4278655
+The list of airports/city from http://codepen.io/mochiron/pen/ONGjwz and modified with continents list.
 
 Everything else is based from the NPM packages documentation.

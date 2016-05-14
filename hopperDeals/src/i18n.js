@@ -1,9 +1,9 @@
 module.exports = {
   help: 'Help',
-  helpInstructions: 'You can ask me for "new deals" from any city in the US to anywhere in the World.',
+  helpInstructions: 'You can ask me for "new deals" from any city in the US to any continent in the World, like "South America" or "Europe".',
   seeHelpCard: 'See the Help card in the Alexa app for additional information.',
   helpContact: 'For reporting bugs or suggestions, please email 54chiMaster@gmail.com',
-  helpPrompt: 'Where do you want to go Today?',
+  helpPrompt: 'From which city to which continent do you want to go?',
   exit: 'Ok, till next time.',
   greeting: 'Welcome to Hopper Deals. What travel deals would you like to hear? You can say, "new deals" or "anywhere".',
   greetingReprompt: 'Sorry, I didn\'t get that. What travel deals would you like to hear? You can say, "new deals" or "anywhere".',
@@ -18,5 +18,6 @@ module.exports = {
   speechDealsEnd:' travel deals:',
   speechDealsFirst:'first',
   speechDealsNext:'next',
-  speechDealsLast:'last'
+  speechDealsLast:'last',
+  addEmailInstructions: 'You have already registered an email, you may say delete my email.'
 };

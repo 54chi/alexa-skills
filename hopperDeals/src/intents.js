@@ -4,7 +4,8 @@ var pluralize = require('pluralize');
 var capitalize = require('capitalize');
 var api = require('./api');
 var i18n = require('./i18n');
-var debug = true;
+var iata = require('./iata');
+var debug = true;  //turn it to false if you want to reduce the number of console.logs
 
 //pagination stuff
 var PAGINATION_SIZE = 4;
@@ -12,13 +13,13 @@ var PAGINATION_SIZE = 4;
 // The intents that the Alexa skill will Support
 // the ones that start with "AMAZON" are standard ones
 
-/*
+/* FOR FUTURE INTERACTIONS:
 AddEmail
 DeleteEmail
-OneShotDeals
-AddOrigin
-Amazon StartOver
-Amazon Repeat
+AddHomeCity
+EmailMe
+StartOver
+Repeat
 */
 var intents = {
   'AMAZON.HelpIntent': HelpIntent,
@@ -26,8 +27,8 @@ var intents = {
   'AMAZON.NoIntent': NoIntent,
   'AMAZON.CancelIntent': CancelIntent,
   'AMAZON.StopIntent': StopIntent,
-  ReadNewDealsIntent: ReadNewDealsIntent,
-  ReadNextDealsIntent: ReadNextDealsIntent
+  'AMAZON.RepeatIntent': RepeatIntent,
+  HopperExplorerIntent: ReadNewDealsIntent
 };
 
 // FUNCTION: HelpIntent: help message
@@ -39,17 +40,20 @@ function HelpIntent(intent, session, response) {
 }
 
 // FUNCTION: YesIntent: this is used to "paginate" through the results
+// invokes readNextDeals to paginate
 function YesIntent(intent, session, response) {
-  if (session.attributes.readMore) {
-    if (session.attributes.dealType) {
-      session.attributes.page += 1;
-      return readNextDeals(intent, session, response, {
-        type: session.attributes.dealType,
-        page: session.attributes.page
-      });
-    }
-  }
-  return response.tell('');
+  return readNextDeals(intent, session, response, {
+    type: 'new'
+  });
+}
+
+// FUNCTION: RepeatIntent: repeat the same page
+// reduces the page attribute counter and repeats the readNextDeals
+function RepeatIntent(intent, session, response) {
+  session.attributes.page=(session.attributes.page<1)?1:(session.attributes.page-1);
+  return readNextDeals(intent, session, response, {
+    type: 'new'
+  });
 }
 
 // FUNCTIONs: NoIntent, CancelIntent, StopIntent: exits the app
@@ -85,19 +89,10 @@ FUNCTION: ReadNewDealsIntent: invokes readDeals to get the latest deals based on
 function ReadNewDealsIntent(intent, session, response) {
   return readDeals(intent, session, response, {
     type: 'new',
-    destination:'region/20oH,region/26m5,region/2CIv,region/25Cs,region/1uw0,country/2BFn,region/2FyS',
-    origin:'city/CHI'
+    origin: getOriginFromIntent(intent,true),
+    destination: getDestinationFromIntent(intent, true)
   });
 };
-
-// FUNCTION: ReadNextDealsIntent: invokes readNextDeals to paginate
-function ReadNextDealsIntent(intent, session, response) {
-  return readNextDeals(intent, session, response, {
-    type: 'new'
-  });
-};
-
-
 
 //FUNCTION makePageCards: creates a sub-array of the results, for pagination
 var makePageCards=function(session){
@@ -137,6 +132,7 @@ function readNextDeals(intent, session, response, options) {
 function readDeals(intent, session, response, options) {
   var type = options.type;
   session.attributes.dealType = type;
+  if (debug) console.log(options);
   return api.getDeals(options).then(function(deals) {
     // get the first page
     session.attributes.page=0;
@@ -181,53 +177,23 @@ function generateDealsCardContent(deals) {
   //console.log("Card Speech: "+ cardContent);
   return cardContent;
 }
-module.exports = intents;
-
-
-
-
-
-
-/**
- * This handles the one-shot interaction, where the user utters a phrase like:
- * 'Alexa, open Tide Pooler and get tide information for Seattle on Saturday'.
- * If there is an error in a slot, this will guide the user to the dialog approach.
- */
-function handleOneshotDealsRequest(intent, session, response) {
-
-    // Determine city, using default if none provided
-    var origin = getOriginFromIntent(intent, true), repromptText, speechOutput;
-    if (origin.error) {
-        // invalid city. move to the dialog
-        repromptText = "Currently, I know tide information for these coastal cities";
-        // if we received a value for the incorrect city, repeat it to the user, otherwise we received an empty slot
-        speechOutput = origin.origin ? "I'm sorry, I don't have any data for " + origin.origin + ". " + repromptText : repromptText;
-
-        response.ask(speechOutput, repromptText);
-        return;
-    }
-
-
-    // all slots filled, either from the user or by default values. Move to final request
-    getListOfDealsResponse(origin, destination, response);
-}
 
 /**
  * Gets the origin from the intent, or returns an error
  */
 function getOriginFromIntent(intent, assignDefault) {
-    var originSlot = intent.slots.Origin;
+    var originSlot = intent.slots.USCity;
     // slots can be missing, or slots can be provided but with empty value.
     // must test for both.
     if (!originSlot || !originSlot.value) {
         if (!assignDefault) {
-            return {error: true};
+            return '';
         } else {
             // For sample skill, default to Seattle.
-            return {origin: 'seattle'};
+            return iata.getCode('seattle');
         }
     } else {
-        return {origin: originSlot.value};
+        return iata.getCode(originSlot.value);
     }
 }
 
@@ -235,17 +201,18 @@ function getOriginFromIntent(intent, assignDefault) {
  * Gets the destination from the intent, or returns an error
  */
 function getDestinationFromIntent(intent, assignDefault) {
-    var destinationSlot = intent.slots.Destination;
+    var destinationSlot = intent.slots.Continent;
     // slots can be missing, or slots can be provided but with empty value.
     // must test for both.
     if (!destinationSlot || !destinationSlot.value) {
         if (!assignDefault) {
-            return {error: true};
+            return '';
         } else {
-            // For sample skill, default to Seattle.
-            return {destination: 'chicago'};
+            return iata.getCode('outside US');
         }
     } else {
-        return {destination: destinationSlot.value};
+        return iata.getCode(destinationSlot.value);
     }
 }
+
+module.exports = intents;

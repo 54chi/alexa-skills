@@ -23,20 +23,48 @@ File structure:
 ## Examples
 ### Sample Utterances:
 ```
-HopperExplorer from {USCity} to {Continent}
-HopperExplorer from {USCity} to the {Continent} continent
-HopperExplorer new deals from {USCity} to {Continent}
-HopperExplorer what are the cheapest flights from {USCity} to {Continent}?
-HopperExplorer show me the best flights from {USCity} to {Continent}
+HopperExplorerIntent for travel deals from {USCity} to {Continent}
+HopperExplorerIntent for travel deals from {USCity}
+HopperExplorerIntent for travel deals to {Continent}
+HopperExplorerIntent from {USCity} to {Continent}
+HopperExplorerIntent from {USCity} to the {Continent} continent
+HopperExplorerIntent new deals from {USCity} to {Continent}
+HopperExplorerIntent what are the cheapest flights from {USCity} to {Continent}
+HopperExplorerIntent show me the best flights from {USCity} to {Continent}
 ```
 
 ## Testing the project
 
-To test, get all dependencies via npm install and then do:
+To test the code, get all dependencies via npm install and then do:
 
 ```
 npm test
 ```
+
+To test the skill, keep in mind the following considerations:
+- Make sure that the you use a **US City** as the origin. The slot type is the AMAZON.US_CITY default one after all.
+- Make sure the destination is a **continent**.
+
+Sample flow:
+
+1) "Alexa, open HopperExplorer"
+2) "new deals from Chicago to Europe"
+(the skill should return the first page of results)
+3) After the first page is retrieved, you can say:
+  3.1) "Yes" to retrieve the next page
+  3.2) "Repeat" to repeat the page results
+  3.3) "No" to cancel
+
+The skill also accept some variations, like: "HopperExplorer from Atlanta to the Asian continent".
+You can also use "anywhere" as the continent, which will also include US cities in the search results, plus anywhere else in the World.
+
+The default values for the US City is **"Seattle"**, and for the Continent is **"Outside US"** (which is anywhere in the world except US)
+
+# To do:
+
+- Save the point of origin in a Database.
+- Extend the USCIty slot to include other cities around the World.
+- Save the users' emails and send the results via e-mail. In the meantime, the result could be seen in the Alexa App's cards.
 
 ## Notes
 

@@ -4,7 +4,7 @@ var test = require('tape');
 var intents = require('../src/intents');
 
 var intent = {
-  slots:{"USCity":{value:"Chicago"}}
+  slots:{"USCity":{value:"Chicago"},"Continent":{value:"Asia"}}
 };
 
 var session = {

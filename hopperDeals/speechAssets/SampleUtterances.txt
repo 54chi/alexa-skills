@@ -1,5 +1,8 @@
-HopperExplorer from {USCity} to {Continent}
-HopperExplorer from {USCity} to the {Continent} continent
-HopperExplorer new deals from {USCity} to {Continent}
-HopperExplorer what are the cheapest flights from {USCity} to {Continent}?
-HopperExplorer show me the best flights from {USCity} to {Continent}
+HopperExplorerIntent for travel deals from {USCity} to {Continent}
+HopperExplorerIntent for travel deals from {USCity}
+HopperExplorerIntent for travel deals to {Continent}
+HopperExplorerIntent from {USCity} to {Continent}
+HopperExplorerIntent from {USCity} to the {Continent} continent
+HopperExplorerIntent new deals from {USCity} to {Continent}
+HopperExplorerIntent what are the cheapest flights from {USCity} to {Continent}
+HopperExplorerIntent show me the best flights from {USCity} to {Continent}
